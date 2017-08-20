@@ -1,11 +1,15 @@
-let express = require('express')
-let consign = require('consign')
-let bodyParser = require('body-parser')
+var express = require('express')
+var consign = require('consign')
+var bodyParser = require('body-parser')
+var expressValidator = require('express-validator')
 
 module.exports = function() {
-    let app = express()
+    var app = express()
 
+    app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
+
+    app.use(expressValidator())
 
     consign()
         .include('controllers')

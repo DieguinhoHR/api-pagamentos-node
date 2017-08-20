@@ -1,24 +1,37 @@
 module.exports = function(app) {
     app.get('/pagamentos', function(req, res) {
-        console.log('recebida recebição de teste')
         res.send('ok.')
     })
 
     app.post('/pagamentos', function(req, res) {
-        let pagamento = req.body
+        req.assert("forma_pagamento", "Forma de pagamento é obrigatório")
+            .notEmpty()
+        req.assert("valor", "Valor é obrigatório e deve ser um decimal")
+            .notEmpty()
+            .isFloat()
+
+        var errors = req.validationErrors()
+
+        if (errors) {
+            res.status(500).send(errors)
+            return
+        }
+
+        var pagamento = req.body
 
         pagamento.status = 'CRIADO'
         pagamento.data = new Date
 
-        let connection = app.persistence.connectionFactory()
-        let pagamentoDao = new app.persistence.PagamentoDao(connection)
+        var connection = app.persistence.connectionFactory()
+        var pagamentoDao = new app.persistence.PagamentoDao(connection)
 
         pagamentoDao.save(pagamento, function(error, result) {
             if (error) {
-                res.send(error)
+                console.log(`Erro ao inserir no banco ${error}`)
+                res.status(500).send(error)
             } else {
-                console.log('pagamento criado')
-                res.json(pagamento)
+                res.location('/pagamentos/' + result.insertId)
+                res.status(201).json(pagamento) // 201 created
             }
         })
     })
