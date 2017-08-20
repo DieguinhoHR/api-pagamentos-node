@@ -9,6 +9,7 @@ module.exports = function() {
 
     consign()
         .include('controllers')
+        .then('persistence')
         .into(app)
 
     return app

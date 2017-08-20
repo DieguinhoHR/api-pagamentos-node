@@ -10,6 +10,16 @@ module.exports = function(app) {
         pagamento.status = 'CRIADO'
         pagamento.data = new Date
 
-        res.send(pagamento)
+        let connection = app.persistence.connectionFactory()
+        let pagamentoDao = new app.persistence.PagamentoDao(connection)
+
+        pagamentoDao.save(pagamento, function(error, result) {
+            if (error) {
+                res.send(error)
+            } else {
+                console.log('pagamento criado')
+                res.json(pagamento)
+            }
+        })
     })
 }
