@@ -1,2 +1,2 @@
 # api-pagamentos-node
-Uma api para pagamentos criada com node.
+Uma gateway de pagamento atraves de recursos http.
