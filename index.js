@@ -1,5 +1,5 @@
-let app = require('./config/express')
+let app = require('./config/express')()
 
 app.listen('3000', function() {
-    console.log('subiu server')
+    console.log('server is running')
 })

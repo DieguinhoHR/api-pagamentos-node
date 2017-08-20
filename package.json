@@ -17,6 +17,7 @@
     },
     "homepage": "https://github.com/DieguinhoHR/api-pagamentos-node#readme",
     "devDependencies": {
+        "consign": "^0.1.6",
         "express": "^4.15.4"
     }
 }
